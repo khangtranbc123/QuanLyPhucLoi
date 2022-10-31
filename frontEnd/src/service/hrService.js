@@ -30,6 +30,9 @@ class StaffService {
     async getWelfare(id) {
         return await axios.get(`http://localhost:8083/api/staff-show/${id}`);
     }
+    async getWelfareRegister(id) {
+        return await axios.get(`http://localhost:8083/api/staff-show-register/${id}`);
+    }
     async getGeneralWelfare() {
         return await axios.get('http://localhost:8083/api/general-welfanes');
     }

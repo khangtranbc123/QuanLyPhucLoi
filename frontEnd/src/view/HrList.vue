@@ -1,187 +1,60 @@
 <template>
   <div class="hr-list">
+    
     <div class="hr-content">
-      <div class="hr-title">Quản lý nhân sự</div>
+      <div class="hr-title"><strong>QUẢN LÝ NHÂN VIÊN</strong></div>
       <br />
       <div class="row">
         <div class="col-4" style="margin-left: 35px">
-          <el-form :inline="true" class="demo-form-inline">
-            <el-form-item>
-              <el-input
-                v-model="text"
-                placeholder="Nhập tên/mã nhân viên/phòng ban"
-              ></el-input>
-            </el-form-item>
-            <el-form-item>
-              <el-button type="warning" @click="onFind()">Tìm kiếm</el-button>
-            </el-form-item>
-          </el-form>
         </div>
         <div class="col-2" style="margin-left: 332px">
-          <el-popover placement="left" width="600" trigger="click">
-            <h3 style="font-size: 30px" class="hr-detail__title">
-              <Strong>Thêm mới nhân viên</Strong>
-            </h3>
-            <form id="form-staff">
-              <div class="mb-3">
-                <label class="form-label"><strong>Mã nhân viên</strong></label>
-                <input
-                  v-model="staff.code"
-                  type="text"
-                  id="code"
-                  name="code"
-                  class="form-control"
-                  required
-                  placeholder="Mời bạn nhập mã nhân viên"
-                />
-              </div>
-              <div v-show="showValidateNullCode" style="color: red">
-                Mã nhân viên không được để trống
-              </div>
-              <div v-show="showValidateCode" style="color: red">
-                Mã nhân viên đã tồn tại
-              </div>
-
-              <div class="mb-3">
-                <label class="form-label"
-                  ><Strong>Họ tên nhân viên</Strong></label
-                >
-                <input
-                  v-model="staff.name"
-                  type="text"
-                  id="name"
-                  name="name"
-                  class="form-control"
-                  required
-                  @click="checkCode()"
-                  placeholder="Mời bạn nhập họ tên nhân viên"
-                />
-              </div>
-              <div v-show="showValidateNullName" style="color: red">
-                Họ tên nhân viên không được để trống
-              </div>
-
-              <div class="mb-3">
-                <label class="form-label"><Strong>Email</Strong></label>
-                <input
-                  name="email"
-                  v-model="staff.email"
-                  type="email"
-                  required
-                  class="form-control"
-                  placeholder="Mời bạn nhập email nhân viên"
-                  @click="checkCode()"
-                />
-              </div>
-              <div v-show="showValidateEmail" style="color: red">
-                Email đã tồn tại
-              </div>
-              <div v-show="showValidateNullEmail" style="color: red">
-                Email nhân viên không được để trống
-              </div>
-
-              <div class="mb-3">
-                <label class="form-label"><Strong>Ngày sinh</Strong></label>
-                <input
-                  v-model="staff.date"
-                  id="date"
-                  name="date"
-                  required
-                  @click="checkCode()"
-                  type="text"
-                  class="form-control"
-                  placeholder="MM/DD/yyyy"
-                />
-              </div>
-              <div v-show="showValidateNullDate" style="color: red">
-                Ngày sinh nhân viên không được để trống
-              </div>
-
-              <div class="mb-3">
-                <label class="form-label"
-                  ><Strong>Số tiền hỗ trợ phúc lợi</Strong></label
-                >
-                <input
-                  v-model="staff.welfareMoney"
-                  @click="checkCode()"
-                  required
-                  id="welfareMoney"
-                  name="welfareMoney"
-                  type="number"
-                  class="form-control"
-                  placeholder="Mời bạn nhập số tiền nhân viên"
-                />
-              </div>
-              <div v-show="showValidateNullMoney" style="color: red">
-                Tiền hỗ trợ nhân viên không được để trống
-              </div>
-
-              <div class="mb-3">
-                <label class="form-label"><Strong>Phòng ban</Strong> </label>
-                <select
-                  v-model="staff.department"
-                  placeholder="Chọn phòng ban"
-                  @click="checkCode()"
-                  class="form-control"
-                  name="department"
-                  id="department"
-                >
-                  <option v-for="x in departments" :value="x.id" :key="x.id">
-                    {{ x.name }}
-                  </option>
-                </select>
-                <!-- <el-select v-model="staff.department" placeholder="Chọn phòng ban" name="department" id="department">
-                      <el-option
-                        v-for="x in departments"
-                        :key="x.id"
-                        :label="x.name"
-                        :value="x.id">
-                      </el-option>
-                    </el-select> -->
-              </div>
-              <div v-show="showValidateNullDepartment" style="color: red">
-                Mã nhân viên không được để trống
-              </div>
-
-              <div style="text-align: center">
-                <button @click.prevent="create" class="btn btn-success">
-                  Thêm
-                </button>
-                <button
-                  style="margin-left: 20px"
-                  @click.prevent="reset"
-                  class="btn btn-warning"
-                >
-                  Reset
-                </button>
-              </div>
-            </form>
-            <el-button
-              slot="reference"
-              class="btn btn-danger"
-              style="
-                color: white !important;
-                font-size: 14px !important;
-                font-weight: 600 !important;
-              "
-              >Thêm mới</el-button
-            >
-          </el-popover>
         </div>
         <div class="col-6"></div>
       </div>
       <div class="hr-info">
         <div class="hr-table">
           <div class="hr-selected"></div>
+          <table>
+              <thead>
+                <tr width="90%">
+                  <th >     
+                    <div>
+                      <el-form :inline="true" class="demo-form-inline">
+                          <el-form-item>
+                            <el-input
+                              v-model="text"
+                              placeholder="Nhập tên/mã nhân viên/phòng ban"
+                            ></el-input>
+                          </el-form-item>
+                          <el-form-item>
+                            <el-button type="warning" @click="onFind()">Tìm kiếm</el-button>
+                          </el-form-item>
+                    </el-form>
+                    </div>  
+                  </th>
+                  
+                  <th width="10%">
+                    <div>
+                      <el-form :inline="true" class="demo-form-inline">
+                          <el-form-item>
+                            <el-button type="erorr" class="btn btn-danger" @click="showAddForm">Thêm mới</el-button>
+                          </el-form-item>
+                    </el-form>
+                    </div>  
+                  </th>
+                </tr>
+              </thead>
+            </table>
           <div class="hr-table__content">
             <table>
               <thead>
                 <tr>
                   <th width="90px">TT</th>
                   <th width="70px">STT</th>
-                  <th width="250px">Họ và tên</th>
+                  <th width="200px">Họ và tên</th>
                   <th width="200px">Mã nhân viên</th>
-                  <th width="300px">Phòng ban</th>
+                  <th width="240px">Phòng ban</th>
+                  <th width="170x">Trạng thái</th>
                   <th width="90px">info</th>
                 </tr>
               </thead>
@@ -195,15 +68,19 @@
                       <el-button
                         @click="deleteStaff(item.id, index)"
                         type="danger"
-                        icon="el-icon-delete"
+                        icon="el-icon-lock" 
                         circle
                       ></el-button>
                     </span>
                   </td>
                   <td>{{ index + 1 }}</td>
-                  <td>{{ item.name }}</td>
-                  <td>{{ item.code }}</td>
-                  <td>{{ item.department.name }}</td>
+                  <td style="text-align: left;">{{ item.name }}</td>
+                  <td style="text-align: left;">{{ item.code }}</td>
+                  <td style="text-align: left;">{{ item.department.name }}</td>
+                  <td style="text-align: left;">
+                    <div v-if="item.status == 0">Đang làm việc</div>
+                    <div v-if="item.status == 1">Nghỉ làm</div>
+                  </td>
                   <td>
                     <span class="icon-edit" @click="showInfo(item)">
                       <i class="fa fa-circle-info"></i>
@@ -224,13 +101,6 @@
             >
             </el-pagination>
           </div>
-
-          <!-- modal them moi -->
-          <!-- <div class="hr-function" >
-            <el-button round class="hr-detail__button" @click="showDialog"
-            style="background-color: white;" >Thêm mới</el-button
-            >
-          </div> -->
         </div>
         <transition name="slideLeft" v-if="isShow">
           <div class="hr-table__detail" ref="detail">
@@ -392,54 +262,12 @@
                   style="
                     text-align: center;
                     font: 1em sans-serif;
-                    margin-right: 20px;
                   "
                   slot="reference"
                   class="btn btn-danger"
                   >Sửa thông tin nhân viên</el-button
                 >
               </el-popover>
-              <el-popover placement="left" width="350" trigger="click">
-                <div style="font-size: 30px" class="hr-detail__title">
-                  <Strong>Phúc lợi đang hưởng</Strong>
-                </div>
-                <span
-                  ><Strong style="font-size: 20px"
-                    ><i class="el-icon-success"></i> Phúc lợi cá nhân
-                    hóa</Strong
-                  ></span
-                >
-                <ul
-                  v-for="x in welfares"
-                  :key="x.id"
-                  style="list-style-type: none"
-                >
-                  <li>
-                    <Strong>Phúc lợi</Strong> {{ x.welfare.name }}
-                    <div></div>
-                    <Strong>Giá trị</Strong> {{ x.welfare.price }} VNĐ
-                    <i class="el-icon-money"></i>
-                  </li>
-                </ul>
-                <br />
-                <span
-                  ><Strong style="font-size: 20px">
-                    <i class="el-icon-circle-plus"></i> Phúc lợi chung</Strong
-                  ></span
-                >
-                <ul
-                  v-for="x in gerenalWelfares"
-                  :key="x.id"
-                  style="list-style-type: none"
-                >
-                  <li>
-                    <Strong>Phúc lợi</Strong> {{ x.name }}
-                    <div></div>
-                    <Strong>Giá trị</Strong> {{ x.price }} VNĐ
-                    <i class="el-icon-money"></i>
-                  </li>
-                </ul>
-
                 <el-button
                   @click="handleShow(form.id)"
                   slot="reference"
@@ -448,26 +276,235 @@
                 >
                   Kiểm tra phúc lợi
                 </el-button>
-              </el-popover>
+             
             </div>
           </div>
         </transition>
       </div>
       <div class="hr-image"></div>
+
+ 
+    <el-dialog
+      :visible.sync="isShowAdd"
+      width="900px"
+      label-width="100px"
+      top="5vh"
+      left="150px"
+      title="Thêm mới nhân viên"
+    >
+      <div class="row">
+        <form id="form-staff">
+          <div class="row">
+            <div class="col-6">
+              <div>
+                <div class="mb-3">
+                <label class="form-label"><strong>Mã nhân viên:</strong></label>
+                <input
+                  v-model="staff.code"
+                  type="text"
+                  id="code"
+                  name="code"
+                  class="form-control"
+                  required
+                  placeholder="Mã nhân viên"
+                  />
+                </div>
+                <div v-show="showValidateNullCode" style="color: red">
+                  Mã nhân viên không được để trống
+                </div>
+                <div v-show="showValidateCode" style="color: red">
+                  Mã nhân viên đã tồn tại
+                </div>
+              </div>
+
+              <div>
+                <div class="mb-3">
+                <label class="form-label"
+                  ><Strong>Họ tên nhân viên:</Strong></label
+                >
+                <input
+                  v-model="staff.name"
+                  type="text"
+                  id="name"
+                  name="name"
+                  class="form-control"
+                  required
+                  @click="checkCode()"
+                  placeholder="Họ tên nhân viên"
+                />
+                </div>
+                <div v-show="showValidateNullName" style="color: red">
+                  Họ tên nhân viên không được để trống
+                </div>
+              </div>
+              <div>
+                <div class="mb-3">
+                <label class="form-label"><Strong>Email:</Strong></label>
+                <input
+                  name="email"
+                  v-model="staff.email"
+                  type="email"
+                  required
+                  class="form-control"
+                  placeholder="Email nhân viên"
+                  @click="checkCode()"
+                />
+                </div>
+                <div v-show="showValidateEmail" style="color: red">
+                  Email đã tồn tại
+               </div>
+                <div v-show="showValidateNullEmail" style="color: red">
+                 Email nhân viên không được để trống
+                </div>
+              </div>
+            </div>
+
+            <div class="col-6">
+              <div>
+                <div class="mb-3">
+                  <label class="form-label"><Strong>Ngày sinh:</Strong></label>
+                  <input
+                    v-model="staff.date"
+                    id="date"
+                    name="date"
+                    required
+                    @click="checkCode()"
+                    type="text"
+                    class="form-control"
+                    placeholder="MM/DD/YYYY"
+                  />
+                </div>
+                <div v-show="showValidateNullDate" style="color: red">
+                  Ngày sinh nhân viên không được để trống
+                </div>
+              </div>  
+
+              <div>
+                <div class="mb-3">
+                  <label class="form-label"
+                    ><Strong>Số tiền hỗ trợ phúc lợi:   <span v-if="!staff.welfareMoney==''">
+                    {{formatCurrency(staff.welfareMoney)}}
+                  </span></Strong></label
+                  >
+                  <input
+                    v-model="staff.welfareMoney"
+                    @click="checkCode()"
+                    required
+                    id="welfareMoney"
+                    name="welfareMoney" 
+                    type="text"
+                    class="form-control"
+                    placeholder="Tiền hỗ trợ phúc lợi"
+                  />
+                </div>
+                <div v-show="showValidateNullMoney" style="color: red">
+                  Tiền hỗ trợ nhân viên không được để trống
+                </div>
+              </div> 
+
+              <div>
+                  <div class="mb-3">
+                  <label class="form-label"><Strong>Phòng ban:</Strong> </label>
+                  <select style="height: 55px;"
+                    v-model="staff.department"
+                    placeholder="Chọn phòng ban"
+                    @click="checkCode()"
+                    class="form-control"
+                    name="department"
+                    id="department"
+                  >
+                    <option v-for="x in departments" :value="x.id" :key="x.id">
+                      {{ x.name }}
+                    </option>
+                  </select>
+                  </div>
+                  <div v-show="showValidateNullDepartment" style="color: red">
+                    Phòng ban không được để trống
+                  </div>
+              </div>
+            </div>
+          </div>
+
+              <div style="text-align: center">
+                <button @click.prevent="create" class="btn btn-danger">
+                  <strong>Thêm mới</strong>
+                </button>
+              </div>
+            </form>
+
+      </div>
+    </el-dialog>
+
+    <el-dialog
+      :visible.sync="isWelfare"
+      width="900px"
+      label-width="100px"
+      top="5vh"
+      left="150px"
+      title="Phúc lợi đang hưởng"
+      boder=""
+    >
+    <div label-width="120px" class="pl-table__content">
+      <h6>Nhân viên: {{staff.name}} / Tổng tiền hỗ trợ phúc lợi: {{formatCurrency(staff.welfareMoney) }}</h6>
+          <table>
+            <thead>
+              <tr>
+                <th colspan="1">STT</th>
+                <th>Tên phúc lợi</th>
+                <th>Đơn giá</th>
+                <th>Số lượng</th>
+                <th>Thành tiền</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="font-weight: bold">I</td>
+                <td colspan="3" style="font-weight: bold; text-align: center;">Phúc Lợi Chung</td>
+                <td><strong>{{formatCurrency(Money1)}}</strong></td>
+              </tr>
+              <tr v-for="(item, index) in gerenalWelfares" :key="index">
+                <td style="font-weight: bold">{{ index + 1 }}.</td>
+                <td>{{ item.name }}</td>
+                <td>{{ formatCurrency(item.price) }}</td>
+                <td>1</td>
+                <td>
+                  {{ formatCurrency(item.price) }}
+                </td>
+              </tr>
+              <tr>
+                <td style="font-weight: bold">II</td>
+                <td colspan="3" style="font-weight: bold;  text-align: center;">Phúc Lợi Cá Nhân Hóa</td>
+                <td></td>
+              </tr>
+              <tr v-for="(item, index) in welfares" :key="index">
+                <td style="font-weight: bold">{{ index + 1 }}.</td>
+                <td>{{ item.welfare.name }}</td>
+                <td>{{ formatCurrency(item.welfare.price) }}</td>
+                <td>
+                  {{soluong}}
+                </td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>  
+    </el-dialog>
     </div>
   </div>
 </template>
-
 <script>
 import moment from "moment";
 import StaffService from "@/service/hrService";
+import _ from 'lodash'
 export default {
   name: "HrList",
   data() {
     return {
       staffs: [],
       welfares: [],
+      welfaresMoney: '',
       gerenalWelfares: [],
+      Money1: '',
       departments: [],
       text: "",
       date: "",
@@ -485,12 +522,14 @@ export default {
         email: "",
         department: "",
       },
+      isShowAdd: false,
+      isWelfare: false,
       code: [],
       email: [],
       price: [],
       value: "",
       isShow: false,
-      showDialogAdd: false,
+      showDialogAdd: true,
       status: true,
       showValidateCode: false,
       showValidateEmail: false,
@@ -506,6 +545,12 @@ export default {
   //   this.staff.date = this.formatDate(this.staff.date)
   // },
   methods: {
+    showAddForm() {
+      this.isShowAdd = true;
+    },
+    showWelfareForm() {
+      this.isWelfare = true;
+    },
     getRequestParams(page, pageSize) {
       let params = {};
       if (page) {
@@ -552,6 +597,12 @@ export default {
       if (value) {
         return moment(String(value)).format("DD/MM/yyyy");
       }
+    },
+    formatCurrency(value) {
+      return Intl.NumberFormat("vi-VN", {
+        style: "currency",
+        currency: "VND",
+      }).format(value);
     },
     formatPrice(str) {
       return str
@@ -603,6 +654,7 @@ export default {
       });
     },
     handleShow(id) {
+      this.isWelfare = true
       this.staffId = id;
       console.log(id);
       StaffService.getWelfare(id).then((response) => {
@@ -613,7 +665,11 @@ export default {
       });
       StaffService.getGeneralWelfare().then((response) => {
         this.gerenalWelfares = response.data;
-        console.log(response.data);
+        this.Money1 = _.sumBy(response.data, 'price')
+      });
+      StaffService.getStaff(id)
+      .then((response) => {
+        this.staff = response.data;
       });
       this.status = false;
     },
@@ -694,6 +750,12 @@ export default {
       } else {
         this.showValidateNullDepartment = false;
       }
+      if (this.staff.department === "") {
+        this.showValidateNullMoney = true;
+      } else {
+        this.showValidateNullMoney = false;
+      }
+      
     },
 
     listCode() {
@@ -761,8 +823,45 @@ export default {
           });
         });
     },
-  },
 
+    formatNumber(n) {
+    // format number 1000000 to 1,234,567
+    return n.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+    },
+
+
+    formatCurrency2() {
+  if (this.staff.welfareMoney != '') {
+    var input = this.staff.welfareMoney
+    var input_val = input;
+
+    if (input_val === "") { return; }
+    var original_len = input_val.length;
+    var caret_pos = input.prop("selectionStart");
+
+    if (input_val.indexOf(".") >= 0) {
+      var decimal_pos = input_val.indexOf(".");
+      var left_side = input_val.substring(0, decimal_pos);
+      var right_side = input_val.substring(decimal_pos);
+      left_side = this.formatNumber(left_side);
+      right_side = this.formatNumber(right_side);       
+      right_side = right_side.substring(0, 2);
+      input_val = "$" + left_side + "." + right_side;
+
+    } else {
+      input_val = this.formatNumber(input_val);
+      input_val = "$" + input_val;
+    }
+    
+    input.val(input_val);
+    var updated_len = input_val.length;
+    caret_pos = updated_len - original_len + caret_pos;
+    input[0].setSelectionRange(caret_pos, caret_pos);
+    }
+    this.staff.welfareMoney = input_val
+  }
+   
+  },  
   mounted() {
     // this.staff.date = this.formatDate(this.staff.date)
     this.retrieveStaff();
@@ -954,4 +1053,39 @@ export default {
   font-weight: 700;
   color: #f00 !important;
 }
+.pl-table__content table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.pl-table__content table tr {
+  background: rgba(217, 217, 217, 0.13);
+}
+.pl-table__content table tr th {
+  border-right: 1px solid #c7c7c7;
+  padding: 14px;
+}
+.pl-table__content table tr td {
+  padding: 20px;
+  line-height: 30px;
+  height: 30px;
+}
+.pl-table__content table thead tr {
+  background-color: #d9d9d9;
+  position: sticky;
+  top: 0;
+}
+.pl-table__content table thead th {
+  font-size: 14px;
+  font-weight: 600;
+}
+.pl-table__content table tr td {
+  border-right: 1px solid #c7c7c7;
+}
+.pl-table__content table tbody tr {
+  border-bottom: 1px solid #c7c7c7;
+}
+.pl-table__content table tbody tr:hover {
+  background-color: pink;
+}
+
 </style>
