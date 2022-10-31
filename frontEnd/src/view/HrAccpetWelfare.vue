@@ -1,7 +1,7 @@
 <template>
   <div class="pl-body">
     <div class="pl-content">
-      <div class="pl-title">DANH SÁCH XÉT DUYỆT</div>
+      <div class="pl-title"><strong>DANH SÁCH XÉT DUYỆT</strong></div>
       <div class="pl-ele">
         <div class="pl-table">
           <div class="pl-table__content">
@@ -12,21 +12,17 @@
                     <th>STT</th>
                     <th>Họ tên </th>
                     <th>Mã nhân viên</th>
-                    <th>Phúc lợi</th>
-                    <th>Giá trị</th>
-                    <th>Thao tác</th>
+                    <th>Danh sách đăng ký </th>
+                   
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="(item, index) in list" :key="index">
+                  <tr v-for="(item, index) in listStaff" :key="index">
                     <td>{{ index + 1}}</td>
                     <td>{{ item.staff.name }}</td>
                     <td>{{ item.staff.code }}</td>
-                    <td>{{ item.welfare.name }}</td>
-                    <td>{{ item.welfare.price }} VNĐ</td>
                     <td>
-                      <el-button @click="handleSuccess(item.id,index)" type="success" icon="el-icon-check" circle></el-button>
-                      <el-button @click="handleDelete(item.id,index)" type="danger" icon="el-icon-delete" circle></el-button>
+                      <el-button @click="handShow(item.staff.id)" type="warning"><strong>Danh sách xét duyệt</strong></el-button>
                     </td>
                   </tr>
                 </tbody>
@@ -36,12 +32,49 @@
         </div>
       </div>
     </div>
+    <el-dialog
+      :visible.sync="isWelfare"
+      width="1100px"
+      label-width="100px"
+      top="5vh"
+      left="150px"
+      title="Danh sách phúc lợi đăng ký"
+      boder=""
+    >
+    <strong><h5>Nhân viên: {{staff.name}}</h5></strong>
+    <div label-width="120px" class="pl-table__content">
+      <table>
+          <thead>
+                  <tr>
+                    <th>STT</th>
+                    <th>Tên phúc lợi </th>
+                    <th>Đơn giá</th>
+                    <th>Số lượng</th>
+                    <th>Tổng tiền</th>
+                    <th>Thao tác</th>
+                  </tr>
+          </thead>
+          <tr v-for="(item, index) in listRegister" :key="index">
+              <td>{{ index + 1}}</td>
+              <td style="text-align: left;">{{ item.welfare.name }}</td>
+              <td style="text-align: right;">{{ formatCurrency(item.welfare.price) }} </td>
+              <td></td>
+              <td></td>
+              <td>
+                <el-button @click="handleSuccess(item.id,index)" type="success" icon="el-icon-check" circle></el-button>
+                <el-button @click="handleDelete(item.id,index)" type="danger" icon="el-icon-close" circle></el-button>
+              </td>
+          </tr> 
+      </table>    
+    </div>  
+    </el-dialog>
   </div>
 </template>
 
 <script>
 /* eslint-disable */
 import StaffService from "../service/hrService";
+import _ from 'lodash'
 export default {
   name: "PhucLoiList",
   data() {
@@ -51,7 +84,12 @@ export default {
       isShowDialog: false,
       isShowAdd: false,
       list: [],
-      idDelete:""
+      listStaff: [],
+      idDelete:"",
+      isWelfare: false,
+      staff: {},
+      listRegister: [],
+      
     };
   },
   methods: {
@@ -62,7 +100,7 @@ export default {
     handleDelete (id,index) {
         try {
           StaffService.DeleteRegisterWelfare(id)
-          this.list.splice(index,1);
+          this.listRegister.splice(index,1);
           this.$notify.info({
           title: 'notification',
           message: 'Từ chối thành công'
@@ -74,7 +112,7 @@ export default {
     handleSuccess (id,index) {
         try {
           StaffService.SuccessRegisterWelfare(id)
-          this.list.splice(index,1);
+          this.listRegister.splice(index,1);
           this.$notify({  
           title: 'Success',
           message: 'Xét duyệt',
@@ -84,20 +122,39 @@ export default {
           this.errorMessage = error
         }
     },
+    handShow(id) {
+      this.isWelfare = true
+      StaffService.getWelfareRegister(id)
+        .then((response) => {
+          this.listRegister = response.data;
+          console.log(response.data);
+      });
+      StaffService.getStaff(id)
+      .then((response) => {
+          this.staff = response.data;
+      });
+    },
     getAll() {
       StaffService.getRegisterWelfare()
       .then(response => {
         this.list = response.data
-        this.list.sort((firstItem, secondItem) => firstItem.staff.name > secondItem.staff.name);
-        console.log(response.data)
+        this.listStaff =  _.unionBy (this.list, 'staff.id')
+        console.log(this.listStaff)
       
       })
       .catch(e => {
           console.log(e)
         })
-    }
+    },
+    formatCurrency(value) {
+      return Intl.NumberFormat("vi-VN", {
+        style: "currency",
+        currency: "VND",
+      }).format(value);
+    },
 
   },
+ 
   created(){
     this.getAll()
   }

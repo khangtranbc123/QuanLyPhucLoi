@@ -69,7 +69,7 @@ public class StaffController {
     @GetMapping("/staffs/find")
     public ResponseEntity<Page<Staff>> getListText(@RequestParam(name="text") String text,
                                                    @RequestParam(defaultValue = "0") int page
-            ,@RequestParam(defaultValue = "5") int pageSize) {
+            ,@RequestParam(defaultValue = "10") int pageSize) {
 
         return new ResponseEntity<Page<Staff>>(staffService.findText(text, page, pageSize), HttpStatus.OK);
     }
@@ -149,6 +149,10 @@ public class StaffController {
     @GetMapping("/staff-show/{id}")
     public ResponseEntity <List<WelfareStaff>> showWelfare(@PathVariable("id") Long id){
         return new ResponseEntity<List<WelfareStaff>>(welfareStaffService.getbystaff(id), HttpStatus.OK);
+    }
+    @GetMapping("/staff-show-register/{id}")
+    public ResponseEntity <List<WelfareStaff>> showWelfareRegister(@PathVariable("id") Long id){
+        return new ResponseEntity<List<WelfareStaff>>(welfareStaffService.getStaffRegister(id), HttpStatus.OK);
     }
     @GetMapping("/staff-show-all/{id}")
     public ResponseEntity <List<WelfareStaff>> showAllWelfare(@PathVariable("id") Long id){
