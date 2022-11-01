@@ -19,10 +19,15 @@ public class WelfareStaffEntity {
     @Column(name = "id_welfare")
     private Long idWelfare;
 
-    public WelfareStaffEntity(Integer status, Long idWelfare, Long idStaff) {
+    @Column(name="quantity")
+    private Long quantity;
+
+
+    public WelfareStaffEntity(Integer status, Long idWelfare, Long idStaff,Long quantity) {
         this.status = status;
         this.idStaff = idStaff;
         this.idWelfare = idWelfare;
+        this.quantity = quantity;
     }
 
     public WelfareStaffEntity() {
@@ -83,5 +88,13 @@ public class WelfareStaffEntity {
         result = 31 * result + (idStaff != null ? idStaff.hashCode() : 0);
         result = 31 * result + (idWelfare != null ? idWelfare.hashCode() : 0);
         return result;
+    }
+
+    public Long getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Long quantity) {
+        this.quantity = quantity;
     }
 }

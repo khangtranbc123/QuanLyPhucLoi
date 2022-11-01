@@ -28,4 +28,6 @@ public class WelfareStaff implements Serializable {
     @JoinColumn(name = "idWelfare")
     private Welfare welfare;
 
+
+
 }

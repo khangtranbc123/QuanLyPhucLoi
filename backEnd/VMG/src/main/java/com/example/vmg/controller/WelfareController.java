@@ -3,11 +3,9 @@ package com.example.vmg.controller;
 
 import com.example.vmg.dto.respose.MessageResponse;
 
-import com.example.vmg.model.RegisterWelfare;
+import com.example.vmg.model.*;
 
 import com.example.vmg.form.WelfareForm;
-import com.example.vmg.model.Welfare;
-import com.example.vmg.model.GeneralWelfare;
 import com.example.vmg.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,7 +17,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.Clock;
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -46,8 +44,8 @@ public class WelfareController {
         phucLoi.setName(welfareForm.getName());
         phucLoi.setText(welfareForm.getText());
         phucLoi.setPrice(welfareForm.getPrice());
+        phucLoi.setIsQuantity(welfareForm.getIsQuantity());
         phucLoi.setStatus(0);
-
         welfareService.saveOrUpdate(phucLoi);
             return new ResponseEntity<Void>(HttpStatus.OK);
     }
@@ -61,6 +59,12 @@ public class WelfareController {
         generalWelfareService.save(generalWelfare);
         return ResponseEntity.ok(new MessageResponse("create welfane successfully!"));
     }
+    @GetMapping("/getWelfare/{id}")
+    public Welfare getWelfare(@PathVariable Long id){
+
+        return welfareService.getById(id);
+    }
+
 //    @PostMapping("/general-welfane")
 //    public ResponseEntity<Void> addPhucLoiBiDong(@ModelAttribute WelfareForm welfareForm){
 //        GeneralWelfare generalWelfare = new GeneralWelfare();
@@ -92,6 +96,7 @@ public class WelfareController {
         phucLoi.setName(welfareForm.getName());
         phucLoi.setText(welfareForm.getText());
         phucLoi.setPrice(welfareForm.getPrice());
+        phucLoi.setIsQuantity(welfareForm.getIsQuantity());
         welfareService.update(id, phucLoi);
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
@@ -115,4 +120,17 @@ public class WelfareController {
         Welfare phucLoi = welfareService.getById(id);
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
+    @GetMapping("/get_all_general_money")
+    public Long getAllMoney(){
+        return generalWelfareService.getAllMoneyGeneral();
+    }
+    @GetMapping("/getRegisterWelfare/{id}")
+    public List<WelfareStaffInterface> getWelfareOfUser(@PathVariable Long id){
+        return welfareStaffEntityService.getAlsoWelfareOfUser(id);
+    }
+    @GetMapping("/getCurrentRegisterWelfare/{id}")
+    public List<WelfareStaffInterface> getCurrentWelfareOfUser(@PathVariable Long id){
+        return welfareStaffEntityService.getAllWelfareOfUser(id);
+    }
+
 }

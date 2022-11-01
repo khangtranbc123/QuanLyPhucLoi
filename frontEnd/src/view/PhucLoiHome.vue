@@ -2,7 +2,7 @@
   <div class="pl-main">
     <div class="pl-container">
       <div class="pl-content">
-        <div id="title">Danh Sách Phúc Lợi Của Tôi</div>
+        <div id="title">Danh Sách Phúc Lợi Của {{staff.name}}</div>
         <div label-width="120px" class="pl-table__content">
           <table>
             <thead>
@@ -10,10 +10,10 @@
                 <th>STT</th>
                 <th>Loại Phúc Lợi</th>
                 <th>Tên phúc lợi</th>
-                <th>Thành Tiền(VNĐ)</th>
-                <th>Trạng thái</th>
+                <th>Đơn giá(VNĐ)</th>
+                <th>Số lượng</th>
+                <th>Thành tiền(VNĐ)</th>
                 <th>Thao tác</th>
-                
               </tr>
             </thead>
             <tbody>
@@ -22,9 +22,11 @@
                 <td style="font-weight: bold">Phúc Lợi Chung</td>
                 <td></td>
                 <td></td>
-                <td  style="font-weight: bold"><el-button slot="reference" class="btn btn-success"
+                <td>1</td>
+                <!-- <td  style="font-weight: bold"><el-button slot="reference" class="btn btn-success"
                       >Được Duyệt</el-button
-                    ></td>
+                    ></td> -->
+                <td style="font-weight: bold">Tổng:&nbsp;{{formatCurrency(sumListGeneral)}}</td>
                 <td></td>
               </tr>
               <tr v-for="(item, index) in listGeneral" :key="index">
@@ -33,6 +35,7 @@
                 <td>{{ item.name }}</td>
                 <td>{{ formatCurrency(item.price) }}</td>
                 <td></td>
+                <td>{{ formatCurrency(item.price) }}</td>
                 <td>
                   <el-popover
                     placement="right"
@@ -52,39 +55,42 @@
                 <td></td>
                 <td></td>
                 <td></td>
+                <td style="font-weight: bold">Tổng:&nbsp;{{formatCurrency(sumListRegister)}}</td>
                 <td></td>
               </tr>
               <tr v-for="(item, index) in listRegister" :key="index">
                 <td style="font-weight: bold">{{ index + 1 }}.</td>
                 <td></td>
-                <td>{{ item.welfare.name }}</td>
-                <td>{{ formatCurrency(item.welfare.price) }}</td>
+                <td>{{ item.name }}</td>
+                <td>{{ formatCurrency(item.price) }}</td>
+                <td>{{item.quantity}}</td>
                 <td>
-                  <div v-if="item.status==2">
+                  <!-- <div v-if="item.status==2">
                     <el-button class="btn btn-info">Đang Chờ</el-button>
                   </div>
                   <div v-if="item.status==1 || item.status == 0">
                     <el-button :class="item.status==1?'btn btn-danger':'btn btn-success'">{{item.status == 1 ? 'Hủy Duyệt':'Đã Duyệt'}}</el-button>
-                  </div>
-            
+                  </div> -->
+                {{formatCurrency(item.quantity*item.price)}}
                 </td>
                 <td>
                   <el-popover
                     placement="right"
                     width="250"
                     trigger="hover"
-                    :content="item.welfare.text"
+                    :content="item.text"
                   >
                     <el-button slot="reference" class="btn btn-warning"
                       >Xem mô tả</el-button
                     >
                   </el-popover>
                 </td>
-                
               </tr>
             </tbody>
           </table>
         </div>
+        <!-- <pre>{{listGeneral}}</pre>
+        <pre>{{listRegister}}</pre> -->
       </div>
 
       <!-- <pre>{{ userName }}</pre>
@@ -96,6 +102,7 @@
   <script>
 /* eslint-disable */
 import WelfareApi from "@/service/phucLoiService";
+import StaffService from '../service/hrService'
 let welfareApi = new WelfareApi();
 export default {
   name: "PhucLoiHome",
@@ -105,7 +112,10 @@ export default {
       listRegister: [],
       userName: "",
       idUser: "",
-      text:""
+      text: "",
+      sumListGeneral: 0,
+      sumListRegister: 0,
+      staff: {}
     };
   },
   methods: {
@@ -134,13 +144,16 @@ export default {
       });
     },
     async getAllWelfare() {
-      await welfareApi.getAllWelfareByUser(this.idUser).then((res) => {
-        // self.isLoaded = true;
+      await welfareApi.getCurrentWelfareWithQuantity(this.idUser).then((res) => {
         this.listRegister = res.data;
-        this.listRegister.sort((firstItem, secondItem) => firstItem.status - secondItem.status);
-        // gọi ở đâu
-        // console.log(res.data);
-        // console.log(this.listRegister);
+        console.log(this.listRegister);
+        // console.log(this.sumListRegister)
+        for (let j = 0; j < this.listRegister.length; j++) {
+          this.sumListRegister += this.listRegister[j].price * this.listRegister[j].quantity;
+        }
+        this.listRegister.sort(
+          (firstItem, secondItem) => firstItem.status - secondItem.status
+        );
       });
     },
     async getAllGeneralWelfares() {
@@ -149,23 +162,33 @@ export default {
         this.listGeneral = res.data;
         // console.log(res.data);
         // console.log(this.listGeneral);
+        for (let i = 0; i < this.listGeneral.length; i++) {
+          this.sumListGeneral += this.listGeneral[i].price;
+        }
+        console.log(this.sumListGeneral);
       });
     },
+    getStaff(email){
+      StaffService.getStaffByEmail(email)
+      .then(Response => {
+        this.staff = Response.data
+      })
+    }
   },
 
-  async created() {
+  created() {
     if (localStorage.getItem("user")) {
       this.userName = JSON.parse(localStorage.getItem("user")).userName;
+      this.getStaff(this.userName)
       console.log(this.userName);
       welfareApi.findID(this.userName).then((res) => {
         this.idUser = res.data;
         console.log(this.idUser);
         this.getAllGeneralWelfares();
-        this.getAllWelfare(); //day
+        this.getAllWelfare();
       });
     }
     console.log("before");
-    console.log(this.listRegister);
   },
 };
 </script>

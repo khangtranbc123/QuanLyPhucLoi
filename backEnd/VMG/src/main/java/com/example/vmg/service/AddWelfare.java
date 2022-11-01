@@ -4,11 +4,11 @@ import java.util.ArrayList;
 
 public class AddWelfare {
     private int id;
-    private ArrayList<Integer> list;
+    private ArrayList<AddWelfareQuantity> list;
 
     public AddWelfare() {
     }
-    public AddWelfare(int id, ArrayList<Integer> list) {
+    public AddWelfare(int id, ArrayList<AddWelfareQuantity> list) {
         this.id = id;
         this.list = list;
     }
@@ -21,11 +21,11 @@ public class AddWelfare {
         this.id = id;
     }
 
-    public ArrayList<Integer> getList() {
+    public ArrayList<AddWelfareQuantity> getList() {
         return list;
     }
 
-    public void setList(ArrayList<Integer> list) {
+    public void setList(ArrayList<AddWelfareQuantity> list) {
         this.list = list;
     }
 }

@@ -43,6 +43,15 @@ class WelfareApi {
     async getTotalMoney(username) {
         return await axios.get('http://localhost:8083/api/find_money/'+username);
     }
+    async getTotalMoneyGeneralWelfare() {
+        return await axios.get('http://localhost:8083/api/get_all_general_money');
+    }
+    async getAllWelfareWithQuantity(id) {
+        return await axios.get('http://localhost:8083/api/getRegisterWelfare/'+id);
+    }
+    async getCurrentWelfareWithQuantity(id) {
+        return await axios.get('http://localhost:8083/api/getCurrentRegisterWelfare/'+id);
+    }
     
 
     

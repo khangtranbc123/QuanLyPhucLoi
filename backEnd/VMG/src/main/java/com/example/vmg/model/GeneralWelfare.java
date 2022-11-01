@@ -17,4 +17,5 @@ public class GeneralWelfare implements Serializable {
     private String text;
     private Integer status;
     private BigDecimal price;
+    private Boolean quantity;
 }
