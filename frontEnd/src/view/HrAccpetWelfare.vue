@@ -5,7 +5,7 @@
       <div class="pl-ele">
         <div class="pl-table">
           <div class="pl-table__content">
-            <form id="form" label-width="120px">
+            <form id="form" label-width="100px">
               <table>
                 <thead>
                   <tr>
@@ -18,9 +18,9 @@
                 </thead>
                 <tbody>
                   <tr v-for="(item, index) in listStaff" :key="index">
-                    <td>{{ index + 1}}</td>
-                    <td>{{ item.staff.name }}</td>
-                    <td>{{ item.staff.code }}</td>
+                    <td width="9%">{{ index + 1}}</td>
+                    <td style="text-align: left;">{{ item.staff.name }}</td>
+                    <td style="text-align: left;">{{ item.staff.code }}</td>
                     <td>
                       <el-button @click="handShow(item.staff.id)" type="warning"><strong>Danh sách xét duyệt</strong></el-button>
                     </td>
@@ -34,7 +34,7 @@
     </div>
     <el-dialog
       :visible.sync="isWelfare"
-      width="1100px"
+      width="1000px"
       label-width="100px"
       top="5vh"
       left="150px"
@@ -46,12 +46,12 @@
       <table>
           <thead>
                   <tr>
-                    <th>STT</th>
+                    <th width="9%">STT</th>
                     <th>Tên phúc lợi </th>
-                    <th>Đơn giá</th>
-                    <th>Số lượng</th>
-                    <th>Tổng tiền</th>
-                    <th>Thao tác</th>
+                    <th width="12%">Đơn giá</th>
+                    <th width="10%">Số lượng</th>
+                    <th width="15%">Tổng tiền</th>
+                    <th width="15%">Thao tác</th>
                   </tr>
           </thead>
           <tr v-for="(item, index) in listRegister" :key="index">
