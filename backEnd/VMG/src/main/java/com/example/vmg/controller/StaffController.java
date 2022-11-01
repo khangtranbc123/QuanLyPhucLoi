@@ -25,6 +25,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -35,10 +37,6 @@ import java.util.List;
 @RequestMapping("/api")
 public class StaffController {
     @Autowired private StaffService staffService;
-
-
-
-    @Autowired private StaffRepository staffRepository;
 
     @Autowired
     private UserServiceImpl userService;
@@ -59,8 +57,11 @@ public class StaffController {
     @GetMapping("/staffs")
     public ResponseEntity<Page<Staff>> getList(@RequestParam(defaultValue = "0") int page
                                                 ,@RequestParam(defaultValue = "10") int pageSize){
-
         return new ResponseEntity<Page<Staff>>(staffService.getByPage(page, pageSize), HttpStatus.OK);
+    }
+    @GetMapping("/staff-erorr")
+    public List<Staff> getErorr(){
+        return staffService.getErorr();
     }
     @GetMapping("/list")
     public List<Staff> getAlll(){
@@ -80,6 +81,8 @@ public class StaffController {
     @PostMapping("/staff")
     public ResponseEntity<?> addNhanVien(@Valid @ModelAttribute StaffForm staffForm){
         try {
+            DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+
             Staff staff = new Staff();
             staff.setCode(staffForm.getCode());
             staff.setName(staffForm.getName());
@@ -117,6 +120,11 @@ public class StaffController {
         staffService.delete(id);
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
+    @PutMapping("/staff-unlock/{id}")
+    public ResponseEntity<Void> unLookStaff(@PathVariable Long id){
+        staffService.unLock(id);
+        return new ResponseEntity<Void>(HttpStatus.OK);
+    }
     @PutMapping("/staff/{id}")
     public ResponseEntity<Void> update(@PathVariable Long id, @ModelAttribute StaffForm staffForm){
         Staff staff = staffService.findById(id).get();
@@ -136,6 +144,13 @@ public class StaffController {
         String.join(",", ids.stream()
                 .map(value ->  Long.toString(value)).collect(Collectors.toList()));
         return ResponseEntity.ok(new MessageResponse("update money staff successfully!"));
+    }
+    @PutMapping("/staff/deletes")
+    public ResponseEntity<?> mutilpartDelete(@RequestParam("ids") List<Long> ids){
+        staffService.mutipartDelete(ids);
+        String.join(",", ids.stream()
+                .map(value ->  Long.toString(value)).collect(Collectors.toList()));
+        return ResponseEntity.ok(new MessageResponse("delete staff successfully!"));
     }
 
     @GetMapping("/getcode")
@@ -190,6 +205,12 @@ public class StaffController {
         return staffService.sinhNhat(number);
         //return new ResponseEntity<List<Staff>>(staffService.sinhNhat(number), HttpStatus.OK);
     }
+//    @PutMapping("/update-money")
+//    public String updateMoney2(@RequestParam("ids") List<Long> ids, @RequestBody BigDecimal number) {
+//        staffService.updateMoney(number, ids);
+//        return String.join(",", ids.stream()
+//                .map(value ->  Long.toString(value)).collect(Collectors.toList()));
+//    }
 //    @PutMapping("/register-delete/{id}")
 //    public ResponseEntity <?> DeleteRegister(@PathVariable Long id){
 //        RegisterWelfare registerWelfare = registerWelfareService.findById(id).get();

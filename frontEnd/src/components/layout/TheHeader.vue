@@ -77,7 +77,9 @@
                   <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item style="text-decoration: none;color:black;cursor:pointer width: 100%; font-size: 15px">
                     <strong>
-                      Có {{listbirthdays.length}} nhân viên sinh nhật trong tháng này
+                      <H4>
+                        Có {{listbirthdays.length}} nhân viên sinh nhật trong tháng này
+                      </H4>
                     </strong>
                     <ul v-for="x in listbirthdays" :key="x.id">
                       <li><strong>Họ tên: </strong> {{x.name}}<strong>&nbsp;-&nbsp;Mã Nhân viên: </strong> {{x.code}} 

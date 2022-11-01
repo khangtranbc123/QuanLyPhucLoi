@@ -21,10 +21,21 @@ public interface StaffRepository extends JpaRepository<Staff,Long> {
     @Query("update Staff p set p.welfareMoney = :number where p.id in(:longs)")
     void updateMoney(BigDecimal number, List<Long> longs);
 
+
+    @Modifying
+    @Transactional
+    @Query("update Staff p set p.status = 1 where p.id in(:longs)")
+    void MutipartDelete(List<Long> longs);
+
     @Modifying
     @Transactional
     @Query("update Staff p set p.status = 1 where p.id =:id")
     void delete(Long id);
+
+    @Modifying
+    @Transactional
+    @Query("update Staff p set p.status = 0 where p.id =:id")
+    void unlock(Long id);
 
     Staff findByEmail(String email);
 
@@ -45,6 +56,12 @@ public interface StaffRepository extends JpaRepository<Staff,Long> {
 
     @Query("select email from Staff")
     public List<String> getEmail();
+
+    @Modifying
+    @Transactional
+    @Query("select s from Staff s JOIN GeneralWelfare g " +
+            "WHERE s.welfareMoney < sum(g.price) ")
+    public List<Staff> getErorr();
 
     @Query("SELECT DISTINCT b FROM Staff b JOIN b.department c " +
             "WHERE b.status = 0 and b.name LIKE %?1% " +
