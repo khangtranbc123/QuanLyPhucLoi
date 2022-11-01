@@ -33,6 +33,7 @@
         </svg>
       </div>
       <div class="header-right" >
+
     
         <div class="header-right__item" v-if="nhanvien">
         <div class="header-right__item">
@@ -54,8 +55,8 @@
             Quản Lý<i class="el-icon-arrow-down el-icon--right"></i>
           </span>
                   <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item><router-link to="/hr" style="text-decoration: none;color:black;cursor:pointer width: 100%;">Quản lý nhân viên</router-link></el-dropdown-item>
-                    <el-dropdown-item><router-link to="/phucloi" style="text-decoration: none;color:black;cursor:pointer width: 100%;">Quản lý phúc lợi</router-link></el-dropdown-item>
+                    <el-dropdown-item><router-link to="/hr" style="text-decoration: none;color:black;cursor:pointer width: 100%; height: 150%;">Quản lý nhân viên</router-link></el-dropdown-item>
+                    <el-dropdown-item><router-link to="/phucloi" style="text-decoration: none;color:black;cursor:pointer width: 100%; height: 150%;">Quản lý phúc lợi</router-link></el-dropdown-item>
                   </el-dropdown-menu>
           </el-dropdown>
         </div>
@@ -76,10 +77,13 @@
                   <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item style="text-decoration: none;color:black;cursor:pointer width: 100%; font-size: 15px">
                     <strong>
-                      Có {{listbirthdays.length}} nhân viên sinh nhật trong tháng này
+                      <H4>
+                        Có {{listbirthdays.length}} nhân viên sinh nhật trong tháng này
+                      </H4>
                     </strong>
                     <ul v-for="x in listbirthdays" :key="x.id">
-                      <li><strong>Họ tên: </strong> {{x.name}}<strong>&nbsp;-&nbsp;Mã Nhân viên: </strong> {{x.code}}</li>
+                      <li><strong>Họ tên: </strong> {{x.name}}<strong>&nbsp;-&nbsp;Mã Nhân viên: </strong> {{x.code}} 
+                      <strong>&nbsp;-&nbsp;Sinh ngày: </strong> {{formatDate(x.date)}}</li>
                     </ul>
                   </el-dropdown-item>
                   </el-dropdown-menu>

@@ -47,5 +47,8 @@ public class WelfareStaffService {
     public List<WelfareStaff> getbyRegister(){
         return welfareStaffRepository.getByRegister();
     }
+    public List<WelfareStaff> getStaffRegister(Long id){
+        return welfareStaffRepository.findByStaffRegisterId(id);
+    }
 
 }

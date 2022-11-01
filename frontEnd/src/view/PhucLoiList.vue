@@ -150,7 +150,7 @@
     >
     <div style="font-size: 20px" class="hr-detail__title">
                   <Strong>Thêm mới phúc lợi</Strong>
-                </div>
+    </div>
       <el-form
         :model="add"
         ref="add"
@@ -181,6 +181,7 @@
         </el-button>
       </div>
     </el-dialog>
+
   </div>
 </template>
 
