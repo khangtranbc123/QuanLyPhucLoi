@@ -17,6 +17,7 @@ public class RegisterWelfare implements Serializable {
     private String email;
     private String code;
     private Integer status;
+
     @ManyToOne
     @JoinColumn(name = "IdWelfare")
     private Welfare welfare;

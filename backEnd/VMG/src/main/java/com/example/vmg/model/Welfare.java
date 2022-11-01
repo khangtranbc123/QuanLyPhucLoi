@@ -20,6 +20,7 @@ public class Welfare implements Serializable {
     private String text;
     private BigDecimal price;
     private Integer status;
+    private Boolean isQuantity;
 
     @JsonIgnore
     @OneToMany(mappedBy = "welfare")

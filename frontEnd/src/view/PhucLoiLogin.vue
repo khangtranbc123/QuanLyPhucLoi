@@ -7,29 +7,32 @@
       <form name="form" @submit.prevent="handleLogin">
         <div class="form-group">
           <input
-              v-model="user.userName"
-              type="email"
-              class="form-control"
-              name="username"
-              placeholder="Nhập email"
-              required
+            v-model="user.userName"
+            type="email"
+            class="form-control"
+            name="username"
+            placeholder="Nhập email"
+            required
           />
         </div>
-        <br>
+        <br />
         <div class="form-group">
           <input
-              v-model="user.passWord"
-              type="password"
-              class="form-control"
-              name="password"
-              placeholder="Nhập password"
-              required
+            v-model="user.passWord"
+            type="password"
+            class="form-control"
+            name="password"
+            placeholder="Nhập password"
+            required
           />
         </div>
-        <br>
+        <br />
         <div class="form-group" id="bt">
           <button class="btn btn-danger btn-block" :disabled="loading">
-            <span v-show="loading" class="spinner-border spinner-border-sm"></span>
+            <span
+              v-show="loading"
+              class="spinner-border spinner-border-sm"
+            ></span>
             <span>Login</span>
           </button>
         </div>
@@ -42,60 +45,59 @@
 </template>
 
 <script>
-import User from '../models/user.js'
+import User from "../models/user.js";
 export default {
   name: "PhucLoiLogin",
   data() {
     return {
-      user: new User('', ''),
+      user: new User("", ""),
       loading: false,
       login: {
-        username: '',
-        password: ''
+        username: "",
+        password: "",
       },
-    }
+    };
   },
   computed: {
-    loggedIn () {
-      return this.$store.state.auth.status.loggedIn
-    }
+    loggedIn() {
+      return this.$store.state.auth.status.loggedIn;
+    },
   },
-  created () {
+  created() {
     if (this.loggedIn) {
-      this.$router.push('/welcome_page')
+      this.$router.push("/welcome_page");
     }
   },
   methods: {
     onReset() {
       this.$refs.login.resetFields();
     },
-    handleLogin () {
-      this.$store.dispatch('auth/login', this.user).then(
+    handleLogin() {
+      this.$store.dispatch("auth/login", this.user).then(
         () => {
-          this.$router.push('/welcome_page')
-          console.log('ok ok')
           this.$notify({
-          title: 'Success',
-          message: 'Đăng nhập thành công!',
-          type: 'success'
-        });
-        location.reload(true);
+            title: "Success",
+            message: "Đăng nhập thành công!",
+            type: "success",
+          });
+          this.$router.push("/welcome_page");
         },
-        error => {
-          this.loading = false
+        (error) => {
+          this.loading = false;
           this.message =
-                  (error.response && error.response.data) ||
-                  error.message ||
-                  error.toString()
+            (error.response && error.response.data) ||
+            error.message ||
+            error.toString();
           this.$notify.error({
-          title: 'Error',
-          message: 'Sai thông tin đăng nhập!'
-        });
+            title: "Error",
+            message: "Sai thông tin đăng nhập!",
+          });
         }
-      )
-    }
-  }
-}
+      );
+    },
+    
+  },
+};
 </script>
 
 <style >
@@ -106,10 +108,10 @@ export default {
   top: 80px;
   width: 500px;
   height: 608px;
-box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.25);
-  margin-left:400px;
-  margin-top:80px;
-  background-color:pink;
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.25);
+  margin-left: 400px;
+  margin-top: 80px;
+  background-color: pink;
 }
 
 .login-title {
@@ -135,7 +137,6 @@ box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.25);
   font-weight: 600 !important;
 }
 
-
 .hr-detail__button:hover {
   background-color: #f00 !important;
   color: #fff !important;
@@ -157,24 +158,21 @@ box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.25);
   font-size: 14px !important;
   font-weight: 600 !important;
 }
-input{
+input {
   outline: none;
-  border:none;
-  border-bottom:1px solid black;
-  padding-top:15px !important;
-  padding-bottom:15px !important;
+  border: none;
+  border-bottom: 1px solid black;
+  padding-top: 15px !important;
+  padding-bottom: 15px !important;
 }
-.btn{
-  padding:1px 10px 10px 10px;
+.btn {
+  padding: 1px 10px 10px 10px;
   background-color: #f00;
-  border:none;
-  border-radius:30%;
+  border: none;
+  border-radius: 30%;
   cursor: pointer;
-
-
 }
-.form-group{
-  margin-left:100px;
+.form-group {
+  margin-left: 100px;
 }
-
 </style>

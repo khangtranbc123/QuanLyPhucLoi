@@ -36,5 +36,8 @@ public class GeneralWelfareService {
     public void delete(Long id) {
         generalWelfareRepository.deleteById(id);
     }
+    public Long getAllMoneyGeneral(){
+        return generalWelfareRepository.getAllMoneyGeneral();
+    }
 
 }

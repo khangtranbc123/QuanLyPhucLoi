@@ -5,6 +5,7 @@ import com.example.vmg.respository.WelfareRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,6 +35,10 @@ public class WelfareService {
     public void delete(Long id) {
         welfareRepository.deleteById(id);
     }
+    public BigDecimal getAllMoney(Long id) {
+        return welfareRepository.getAllMoney(id);
+    }
+
 
 
 }

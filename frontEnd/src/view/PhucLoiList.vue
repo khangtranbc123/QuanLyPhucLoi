@@ -1,13 +1,11 @@
 <template>
   <div class="pl-main">
     <div class="pl-content">
-      <div class="pl-title">DANH SÁCH PHÚC LỢI</div>
+      <div class="pl-title"><strong>DANH SÁCH PHÚC LỢI</strong></div>
       <div class="pl-ele">
         <div class="pl-button">
-          <el-button class="pl-button__detail btn btn-danger" @click="showAddForm">{{
-            addText
-          }}</el-button>
-          <el-select v-model="value" placeholder="Loại phúc lợi" style="width:auto">
+          <el-button class="pl-button__detail btn btn-danger" @click="showAddForm">{{ addText }}</el-button>
+          <el-select v-model="value" placeholder="Loại phúc lợi" style="width: auto">
             <el-option label="Phúc Lợi Cá Nhân Hóa" :value="0"> </el-option>
             <el-option label="Phúc Lợi Chung" :value="1"> </el-option>
           </el-select>
@@ -15,18 +13,18 @@
         <div class="pl-table">
           <div class="pl-table__content">
             <!-- <form id="form" label-width="120px"> -->
-              <table>
-                <thead>
-                  <tr>
-                    <th>STT</th>
-                    <th>Tên phúc lợi</th>
-                    <th>Mô tả</th>
-                    <th>Thành Tiền(VNĐ)</th>
-                    <th>Thao tác</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <!-- <tr v-if="isShowAdd">
+            <table>
+              <thead>
+                <tr>
+                  <th>STT</th>
+                  <th>Tên phúc lợi</th>
+                  <th>Mô tả</th>
+                  <th>Thành Tiền(VNĐ)</th>
+                  <th>Thao tác</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- <tr v-if="isShowAdd">
                     <td></td>
                     <td>
                       <input
@@ -67,56 +65,37 @@
                       >
                     </td>
                   </tr> -->
-                  <tr v-for="(item, index) in list" :key="index">
-                    <td>{{ index + 1 }}</td>
-                    <td>{{ item.name }}</td>
-                    <td>{{ item.text }}</td>
-                    <td>{{ item.price }}</td>
-                    <td>
-                      <span class="icon-edit" @click="showEditForm(item)">
-                        <i class="fa fa-edit"></i> </span
-                      >&nbsp;<span
-                        class="icon-delete"
-                        @click="showFormDelete(item.id)"
-                      >
-                        <i class="fa fa-trash"></i>
-                      </span>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+                <tr v-for="(item, index) in list" :key="index">
+                  <td>{{ index + 1 }}</td>
+                  <td style="text-align: left">{{ item.name }}</td>
+                  <td style="text-align: left">{{ item.text }}</td>
+                  <td style="text-align: right">
+                    {{ formatCurrency(item.price) }}
+                  </td>
+                  <td>
+                    <span class="icon-edit" @click="showEditForm(item)">
+                      <i class="fa fa-edit"></i> </span>&nbsp;<span class="icon-delete"
+                      @click="showFormDelete(item.id)">
+                      <i class="fa fa-trash"></i>
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
             <!-- </form> -->
           </div>
         </div>
       </div>
     </div>
-    <el-dialog
-      title="Xác nhận"
-      :visible.sync="centerDialogVisible"
-      width="30%"
-      center
-    >
+    <el-dialog title="Xác nhận" :visible.sync="centerDialogVisible" width="30%" center>
       <span>Bạn có chắc chắn muốn xóa phúc lợi này?</span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="centerDialogVisible = false">Hủy</el-button>
-        <el-button type="primary" @click="showDeleteDialog(idDelete)"
-          >Xác nhận</el-button
-        >
+        <el-button type="primary" @click="showDeleteDialog(idDelete)">Xác nhận</el-button>
       </span>
     </el-dialog>
-    <el-dialog
-      title="Thông tin phúc lợi"
-      :visible.sync="isShowEdit"
-      width="600px"
-      label-width="100px"
-      top="5vh"
-    >
-      <el-form
-        :model="edit"
-        ref="edit"
-        label-width="120px"
-        label-position="top"
-      >
+    <el-dialog title="Thông tin phúc lợi" :visible.sync="isShowEdit" width="600px" label-width="100px" top="5vh">
+      <el-form :model="edit" ref="edit" label-width="120px" label-position="top">
         <el-row>
           <el-col :span="6">
             <el-form-item label="Tên phúc lợi" prop="name">
@@ -129,6 +108,15 @@
             </el-form-item>
           </el-col>
           <el-col>
+            <el-form-item label="Loại" prop="code" v-if="value == 0">
+              <el-select v-model="edit.isQuantity">
+                <el-option type="text" :value="true" label="Chỉ 1"></el-option>
+                <el-option type="text" :value="false" label="Chọn số lượng"></el-option>
+              </el-select>
+
+            </el-form-item>
+          </el-col>
+          <el-col>
             <el-form-item label="Mô tả" prop="code">
               <el-input type="textarea" v-model="edit.text"></el-input>
             </el-form-item>
@@ -136,52 +124,43 @@
         </el-row>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button class="hr-detail__button" round @click="editWel(edit)"
-          >Cập nhật
+        <el-button class="hr-detail__button" round @click="editWel(edit)">Cập nhật
         </el-button>
       </span>
     </el-dialog>
-    <el-dialog
-      :visible.sync="isShowAdd"
-      width="600px"
-      label-width="100px"
-      top="5vh"
-      left="150px"
-    >
-    <div style="font-size: 20px" class="hr-detail__title">
-                  <Strong>Thêm mới phúc lợi</Strong>
-    </div>
-      <el-form
-        :model="add"
-        ref="add"
-        label-width="120px"
-        label-position="top"
-      >
+    <el-dialog title="Thêm mới phúc lợi" :visible.sync="isShowAdd" width="600px" label-width="100px" top="5vh"
+      left="150px">
+      <el-form :model="add" ref="add" label-width="120px" label-position="top">
         <el-row>
           <el-col :span="9">
             <el-form-item label="Tên phúc lợi" prop="name" class="el-item">
-              <el-input v-model="add.name" ></el-input>
+              <el-input v-model="add.name"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="11" :offset="4">
-            <el-form-item label="Thành tiền" prop="address"  class="el-item">
+            <el-form-item label="Thành tiền" prop="address" class="el-item">
               <el-input type="number" v-model="add.price"></el-input>
             </el-form-item>
           </el-col>
+          <el-form-item label="Loại" prop="code" v-if="value == 0">
+            <el-select v-model="add.isQuantity">
+              <el-option type="text" :value="true" label="Chỉ 1"></el-option>
+              <el-option type="text" :value="false" label="Chọn số lượng"></el-option>
+            </el-select>
+
+          </el-form-item>
           <el-col>
-            <el-form-item label="Mô tả" prop="code"  class="el-item">
+            <el-form-item label="Mô tả" prop="code" class="el-item">
               <el-input type="textarea" v-model="add.text"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
       </el-form>
-      <div slot="footer" class="dialog-footer" style="text-align: center;">
-        <el-button class="btn btn-danger" round @click="Add(add)"
-          >Thêm mới
+      <div slot="footer" class="dialog-footer" style="text-align: center">
+        <el-button class="btn btn-danger" round @click="Add(add)">Thêm mới
         </el-button>
       </div>
     </el-dialog>
-
   </div>
 </template>
 
@@ -203,16 +182,18 @@ export default {
         name: "",
         text: "",
         price: "",
+        isQuantity: false,
       },
       add: {
         id: "",
         name: "",
         text: "",
         price: "",
+        isQuantity: false
       },
       list: [],
       centerDialogVisible: false,
-      addText: "Thêm mới phúc lợi cá nhân hóa",
+      addText: "Thêm mới phúc lợi cá nhân hóa"
     };
   },
   watch: {
@@ -244,7 +225,7 @@ export default {
           "Thông tin không hợp lệ",
           {
             confirmButtonText: "OK",
-            callback: () => {},
+            callback: () => { },
           }
         );
         isValidate = false;
@@ -265,7 +246,7 @@ export default {
               });
             });
           });
-        }else{
+        } else {
           welfareApi.createGeneralWelfare(qs.stringify(add)).then((res) => {
             welfareApi.getAllGeneralWelfare().then((res) => {
               // self.isLoaded = true;
@@ -291,6 +272,8 @@ export default {
       this.isShowEdit = false;
       setTimeout(() => {
         this.edit = item;
+        if (item.isQuantity === false) this.label = "Chọn số lượng";
+        else this.label = "Chỉ 1";
         this.isShowEdit = true;
       }, 100);
     },
@@ -307,11 +290,10 @@ export default {
             // alert(index);
             this.list.splice(index, 1);
             this.$notify({
-            title: "Success",
-            message: "Xóa phúc lợi thành công",
-            type: "success",
-          });
-            
+              title: "Success",
+              message: "Xóa phúc lợi thành công",
+              type: "success",
+            });
           }
         });
       } else {
@@ -323,10 +305,10 @@ export default {
             this.list.splice(index, 1);
             this.list.splice(index, 1);
             this.$notify({
-            title: "Success",
-            message: "Xóa phúc lợi thành công",
-            type: "success",
-          });
+              title: "Success",
+              message: "Xóa phúc lợi thành công",
+              type: "success",
+            });
           }
         });
       }
@@ -341,7 +323,7 @@ export default {
           "Thông tin không hợp lệ",
           {
             confirmButtonText: "OK",
-            callback: () => {},
+            callback: () => { },
           }
         );
         isValidate = false;
@@ -353,10 +335,10 @@ export default {
         else welfareApi.updateGeneralWelfare(edit.id, qs.stringify(edit));
         this.isShowEdit = false;
         this.$notify({
-                title: "Success",
-                message: "Sửa thông tin phúc lợi thành công",
-                type: "success",
-              });
+          title: "Success",
+          message: "Sửa thông tin phúc lợi thành công",
+          type: "success",
+        });
       }
     },
     getAllWelfare() {
@@ -375,6 +357,12 @@ export default {
         console.log(this.list);
       });
     },
+    formatCurrency(value) {
+      return Intl.NumberFormat("vi-VN", {
+        style: "currency",
+        currency: "VND",
+      }).format(value);
+    },
   },
   created() {
     console.log("created");
@@ -382,10 +370,10 @@ export default {
     this.getAllWelfare();
   },
 };
-</script>l
+</script>
 
 <style scoped>
-.el-item{
+.el-item {
   color: #f00 !important;
   font-size: 22px;
   font-weight: 600;
@@ -400,7 +388,8 @@ export default {
   text-align: center;
   font-size: 34px;
   font-weight: 600;
-  font-family: "Poppins";
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   background: rgba(255, 255, 255, 0.13);
   padding: 6px 0px;
 }
@@ -411,48 +400,68 @@ export default {
   margin-right: 200px;
   z-index: 2;
 }
+
+.pl-table__content {
+  height: 600px;
+  overflow: scroll;
+}
+
+
 .pl-table__content table {
   width: 100%;
   border-collapse: collapse;
 }
+
 .pl-table__content table tr {
   background: #f2e7ddf8;
 }
+
 .pl-table__content table tr th {
   border-right: 1px solid #e4c9ac;
   padding: 14px;
 }
+
 .pl-table__content table tr td {
   padding: 20px;
   line-height: 30px;
   height: 30px;
 }
+
 .pl-table__content table thead tr {
   background-color: #fdf9f8;
+  position: sticky;
+  top: 0;
 }
+
 .pl-table__content table thead th {
   font-size: 14px;
   font-weight: 600;
 }
+
 .pl-table__content table tbody tr {
   border-bottom: 1px solid #e4c9ac;
 }
+
 .pl-table__content table tr td {
   border-right: 1px solid #e4c9ac;
 }
+
 .pl-table__content table tbody tr:hover {
   background-color: pink;
 }
+
 .icon-delete {
   font-size: 20px;
   color: coral;
   cursor: pointer;
 }
+
 .icon-edit {
   font-size: 20px;
   color: greenyellow;
   cursor: pointer;
 }
+
 input,
 textarea {
   outline: none;
@@ -462,41 +471,48 @@ textarea {
   border: none;
   border-bottom: 1px solid #000;
 }
+
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
+
 [placeholder]:focus::-webkit-input-placeholder {
   transition: text-indent 0.4s 0.4s ease;
   text-indent: -100%;
   opacity: 1;
 }
+
 .pl-button {
   margin-left: 200px;
   margin-top: 30px;
-  margin-bottom:10px;
+  margin-bottom: 10px;
 }
+
 .pl-button__detail {
   color: white !important;
   font-size: 14px !important;
   font-weight: 600 !important;
   text-align: center;
-  margin-right:10px;
-
+  margin-right: 10px;
 }
+
 .pl-button__detail:hover {
   background-color: rgba(255, 0, 0, 0.1) !important;
   border-color: rgba(255, 0, 0, 0.1) !important;
 }
+
 .pl-button__detail:focus {
   background-color: rgba(255, 0, 0, 0.2) !important;
   border-color: rgba(255, 0, 0, 0.2) !important;
 }
+
 .pl-button__detail:active {
   background-color: rgba(255, 0, 0, 0.3) !important;
   border-color: rgba(255, 0, 0, 0.3) !important;
 }
+
 .el-form-item__label {
   color: #f00 !important;
   font-size: 22px;
@@ -528,10 +544,10 @@ input::-webkit-inner-spin-button {
   font-weight: 700;
   color: #f00 !important;
 }
+
 .hr-detail__title {
   color: #000;
   border-bottom: 2px solid #f004;
-  margin:auto;
+  margin: auto;
 }
-
 </style>

@@ -11,6 +11,9 @@ class StaffService {
     async getStaff(id) {
         return await axios.get(`http://localhost:8083/api/staff/${id}`)
     }
+    async getStaffByEmail(email) {
+        return await axios.get(`http://localhost:8083/api/staff-name/${email}`)
+    }
    
     async getCode() {
         return await axios.get('http://localhost:8083/api/getcode')
@@ -30,9 +33,6 @@ class StaffService {
     async getWelfare(id) {
         return await axios.get(`http://localhost:8083/api/staff-show/${id}`);
     }
-    async getWelfareRegister(id) {
-        return await axios.get(`http://localhost:8083/api/staff-show-register/${id}`);
-    }
     async getGeneralWelfare() {
         return await axios.get('http://localhost:8083/api/general-welfanes');
     }
@@ -42,9 +42,6 @@ class StaffService {
 
     async deleteStaff(id) {
         return await axios.put(`http://localhost:8083/api/staff-delete/${id}`)
-    }
-    async unlookStaff(id) {
-        return await axios.put(`http://localhost:8083/api/staff-unlock/${id}`)
     }
     async updateStaff(id, staff) {
         return await axios.put(`http://localhost:8083/api/staff/${id}`, staff)
@@ -60,12 +57,6 @@ class StaffService {
     }
     async DeleteRegisterWelfare(id) {
         return await axios.put(`http://localhost:8083/api/register-delete/${id}`)
-    }
-    async updateMoney (ids) {
-        return await axios.put(`http://localhost:8083/api/staff/update-money?ids=${ids}`)
-    }
-    async deletes (ids) {
-        return await axios.put(`http://localhost:8083/api/staff/deletes?ids=${ids}`)
     }
 }
 export default new StaffService()

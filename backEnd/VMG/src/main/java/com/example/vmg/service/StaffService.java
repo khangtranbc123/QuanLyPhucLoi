@@ -23,10 +23,6 @@ public class StaffService {
     public List<Staff> getList(){
         return staffRepository.findAll();
     }
-    public List<Staff> getErorr(){
-        return staffRepository.getErorr();
-    }
-
     public Page<Staff> getByPage(int pageNumber, int maxNumber){
         Pageable pageable = PageRequest.of(pageNumber, maxNumber);
         return staffRepository.getPage(pageable);
@@ -54,10 +50,6 @@ public class StaffService {
     public void delete(Long id){
         staffRepository.delete(id);
     }
-    public void unLock(Long id){
-        staffRepository.unlock(id);
-    }
-
 //    public void updateMoney(BigDecimal number, List<Long> ids) {
 ////      personRepository.deleteByIdIn(new ArrayList<>(integers));
 //        staffRepository.updateMoney(number, ids);
@@ -66,10 +58,6 @@ public class StaffService {
 //      personRepository.deleteByIdIn(new ArrayList<>(integers));
         staffRepository.updateMoney(number, longs);
         System.out.println("update money");
-    }
-    public void mutipartDelete(List<Long> longs) {
-//      personRepository.deleteByIdIn(new ArrayList<>(integers));
-        staffRepository.MutipartDelete(longs);
     }
 
     public Integer getTotalMoney(Long id){return staffRepository.getMoney(id);}
